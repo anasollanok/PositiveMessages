@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Positive Messages</string>
+    <string name="night">Night</string>
+    <string name="day">Day</string>
+</resources>
