@@ -138,7 +138,8 @@ public class MainActivity extends AppCompatActivity {
             "Todo el coraje necesario es un pensamiento positivo para eliminar los otros cien negativos.-Desconocido."
             };
     private TextView message;
-    private int indexOrder = -1;
+    private EditText editText;
+    private int indexOrder = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,12 +147,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         message = findViewById(R.id.message);
+        editText = findViewById(R.id.messageNumber);
 
         final ConstraintLayout layout = findViewById(R.id.first);
         final Button dayB = findViewById(R.id.day);
         final Button nightB = findViewById(R.id.night);
-        final Button searchB = findViewById(R.id.search);
-        final EditText editText = findViewById(R.id.messageNumber);
 
         dayB.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -164,30 +164,34 @@ public class MainActivity extends AppCompatActivity {
                 layout.setBackgroundColor(Color.rgb(107, 140, 229));
             }
         });
-        searchB.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                int pos = Integer.parseInt(editText.getText().toString());
-                if (pos < 0 || pos >= messages.length){
-                    Toast.makeText(MainActivity.this, "error", Toast.LENGTH_LONG).show();
-                }
-                else{
-                    message.setText(messages[pos]);
-                }
-            }
-        });
+    }
+
+    public void searchMessage(View view){
+        int pos = Integer.parseInt(editText.getText().toString());
+        if (pos < 0 || pos >= messages.length){
+            Toast.makeText(this, "error", Toast.LENGTH_LONG).show();
+            return;
+        }
+        message.setText(messages[pos]);
     }
 
     public void nextMessage(View view){
+        // Random
         // int index = (int) (Math.random() * messages.length);
         // message.setText(messages[index]);
         indexOrder++;
-        indexOrder = indexOrder % messages.length;
+        indexOrder %= messages.length;
         message.setText(messages[indexOrder]);
     }
 
     public void seePrevious(View view){
         indexOrder--;
-        indexOrder = indexOrder % messages.length;
+        if(indexOrder < 0){
+            indexOrder = messages.length-1;
+        }
+        else{
+            indexOrder %= messages.length;
+        }
         message.setText(messages[indexOrder]);
     }
 }
